@@ -4,24 +4,22 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const ContactForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [contact, setContact] = useState({
+    name: '',
+    number: '',
+  });
+ 
 
   const onInputChange = ({ target }) => {
     const { name, value } = target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
+    setContact(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
 
   const onSubmitHandle = event => {
+    const {name, number} = contact
     event.preventDefault();
     onSubmit({ name, number });
     event.target.reset();

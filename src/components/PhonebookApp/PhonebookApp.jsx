@@ -50,12 +50,11 @@ const PhonebookApp = () => {
       number,
     };
 
-    setContacts([...contacts, newContact]);
+    setContacts(prevContacts => [...prevContacts, newContact]);
   };
 
   const deleteContact = id => {
-    const filteredContacts = contacts.filter(item => item.id !== id);
-    setContacts(filteredContacts);
+    setContacts(() => contacts.filter(item => item.id !== id));
   };
 
   const filterChange = ({ target }) => {
