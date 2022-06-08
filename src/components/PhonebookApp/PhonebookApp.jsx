@@ -1,6 +1,6 @@
 import style from './phonebook-app.module.css';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 
 import ContactForm from './ContactForm/ContactForm';
@@ -33,7 +33,7 @@ const PhonebookApp = () => {
     }
   }, [contacts]);
 
-  const addContact = newData => {
+  const addContact = useCallback ( newData => {
     console.log(newData);
     const { name, number } = newData;
     if (
@@ -51,17 +51,21 @@ const PhonebookApp = () => {
     };
 
     setContacts(prevContacts => [...prevContacts, newContact]);
-  };
+  }, [contacts]);
 
-  const deleteContact = id => {
-    setContacts(() => contacts.filter(item => item.id !== id));
-  };
+  const deleteContact = useCallback(
+    id => {
+      const filteredContacts = contacts.filter(item => item.id !== id);
+      setContacts(filteredContacts);
+    },
+    [contacts]
+  );
 
   const filterChange = ({ target }) => {
     setFilter(target.value);
   };
 
-  const getFilteredContactsList = () => {
+  const getFilteredContactsList = useCallback(() => {
     if (!filter) {
       return contacts;
     }
@@ -70,7 +74,7 @@ const PhonebookApp = () => {
       contact.name.toLowerCase().includes(filterQuery)
     );
     return filteredItems;
-  };
+  }, [filter, contacts]);
 
   const filteredContacts = getFilteredContactsList();
   return (
