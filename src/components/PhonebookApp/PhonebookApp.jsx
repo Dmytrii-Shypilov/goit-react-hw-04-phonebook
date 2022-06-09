@@ -33,33 +33,32 @@ const PhonebookApp = () => {
     }
   }, [contacts]);
 
-  const addContact = useCallback ( newData => {
-    console.log(newData);
-    const { name, number } = newData;
-    if (
-      contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
-      )
-    ) {
-      return alert(`${name} is already added!`);
-    }
+  const addContact = useCallback(
+    newData => {
+      console.log(newData);
+      const { name, number } = newData;
+      if (
+        contacts.find(
+          contact => contact.name.toLowerCase() === name.toLowerCase()
+        )
+      ) {
+        return alert(`${name} is already added!`);
+      }
 
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
-    };
+      const newContact = {
+        id: nanoid(),
+        name,
+        number,
+      };
 
-    setContacts(prevContacts => [...prevContacts, newContact]);
-  }, [contacts]);
-
-  const deleteContact = useCallback(
-    id => {
-      const filteredContacts = contacts.filter(item => item.id !== id);
-      setContacts(filteredContacts);
+      setContacts(prevContacts => [...prevContacts, newContact]);
     },
     [contacts]
   );
+
+  const deleteContact = id => {
+    setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
+  };
 
   const filterChange = ({ target }) => {
     setFilter(target.value);
